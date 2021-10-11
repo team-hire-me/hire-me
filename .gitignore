@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Ignore webpack bundle in dist folder
+.dist/
+
+# Ignore package-lock.json
+package-lock.json
