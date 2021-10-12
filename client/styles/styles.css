@@ -25,3 +25,24 @@ body {
   background-color: lightgrey;
   flex-grow: 3;
 }
+
+.login-form {
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form input {
+  text-align: center;
+}
+
+.signin-btnbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-btn .login-btn {
+  flex-grow: 1;
+}

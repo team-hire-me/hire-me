@@ -12,9 +12,10 @@ userController.createUser = async (req, res, next) => {
   if (res.locals.error) {
     return next();
   }
+  console.log('ehllo');
   // Extracting the information we need from request body
   const { name, email, password } = req.body;
-
+  console.log(name,' ',email,' ',password);
   // Hash the password using bcrypt
   let hash;
   try {
@@ -48,6 +49,7 @@ userController.checkUser = async (req, res, next) => {
   // Extracting the information we need from request body
   console.log('INSIDE CHECKUSER');
   const { name, email, password } = req.body;
+    console.log(name,' ',email,' ',password);
 
   // Validate form data before continuing
   if (!name || !email || !password) {
@@ -76,6 +78,7 @@ userController.checkUser = async (req, res, next) => {
 userController.verifyUser = async (req, res, next) => {
   console.log('INSIDE VERIFYUSER');
   const { email, password } = req.body;
+  console.log(email,': ',password);
 
   // Validate login information is complete
   if (!email || !password) {
@@ -104,6 +107,7 @@ userController.verifyUser = async (req, res, next) => {
 
   // Compare db password with given password
   try {
+    console.log(userData);
     const passwordMatch = await bcrypt.compare(password, userData.password);
     if (passwordMatch) {
       res.locals.user = userData;

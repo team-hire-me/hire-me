@@ -17,19 +17,21 @@ const Login = props => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email, password
+        email,
+        password,
       }),
     }).then(response => {
       
-      // console.log(response);
-      // console.log(response.status)
-      // if (response.status === 200) {
-      //   history.push("/homepage")
-      // }
-      // else{
-      //   history.push("/signup")
-      // }
-      history.push('/homepage');
+      console.log(response);
+      console.log(response.status)
+      if (response.status === 200) {
+        history.push("/homepage")
+        this.props.authUser = true;
+      }
+      else{
+        history.push("/signup")
+      }
+      // history.push('/homepage');
     }).catch((err) => {
       console.log('in error');
       console.log(err);
@@ -37,16 +39,22 @@ const Login = props => {
 
 
   }
-  return <div>
-    <form id="signin" onSubmit={(e) => handleSubmit(e)}>
-      <input id="email" name="email" placeholder="email" type="text"></input>
-      <br></br>
-      <input id="pass" name="pass" placeholder="pass" type="text"></input>
-      <br></br>
-      <button id="submit" onClick={() => history.push('/signup')} type="button">Sign Up</button>
-      <button id="submit" formAction="/auth/login" type="submit">Login</button>
-    </form>
-  </div>
+  return (
+    <div className="login-form">
+      <form id="signin" onSubmit={(e) => handleSubmit(e)}>
+        <div className="form-group align-items-center">
+          <input id="email" name="email" placeholder="email" type="text"></input>
+          <br></br>
+        </div>
+        <input id="pass" name="pass" placeholder="password" type="text"></input>
+        <br></br>
+        <div className="signin-btnbox">
+          <button id="signup-btn" onClick={() => history.push('/signup')} type="button">Sign Up</button>
+          <button id="login-btn" formAction="/auth/login" type="submit">Login</button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default Login;

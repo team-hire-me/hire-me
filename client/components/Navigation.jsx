@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-import {Navbar, Container} from 'react-bootstrap';
 
 const Navigation = props => {
   const history = useHistory();
@@ -17,7 +16,7 @@ const Navigation = props => {
     });
   }
   const authUser = false;
-
+  const userName = 'test';
 //   return (
 //     <Navbar>
 //       <Container>
@@ -36,7 +35,7 @@ return (
       {/* {NAVBAR BRAND} */}
       <Link to="/homepage">
         <button type="button" className="navbar-brand">
-          HomePage
+          Hire.me
         </button>
       </Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +63,7 @@ return (
           ? (
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <span className="nav-link">Logged in as {username}</span>
+                <span className="nav-link">Logged in as {userName}</span>
               </li>
               <li className="nav-item">
                 <Link to="/logout" className="nav-link">Logout</Link>
