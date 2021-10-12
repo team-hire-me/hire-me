@@ -24,6 +24,7 @@ CREATE TABLE applications (
   "company_name" varchar NOT NULL,
   "location" varchar NOT NULL,
   "description" varchar NOT NULL,
+  "link" varchar NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "archived" boolean NOT NULL DEFAULT FALSE,
   CONSTRAINT "applications_fk0"
