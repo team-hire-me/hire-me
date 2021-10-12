@@ -33,5 +33,13 @@ module.exports = {
     static: {
       directory: path.resolve(__dirname, 'client'),
     },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000/',
+      },
+      '/auth': {
+        target: 'http://localhost:3000/',
+      },
+    },
   },
 };
