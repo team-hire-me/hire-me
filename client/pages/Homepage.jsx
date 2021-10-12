@@ -26,7 +26,7 @@ const Homepage = (props) => {
     <div>
       <h1>Current Applications</h1>
       <form id="search" onSubmit={(e) => handleSubmit(e)}>
-        <input id="searchstr" name="searchstr" placeholder="applicaiton title" type="text" />
+        <input id="searchstr" name="searchstr" placeholder="application title" type="text" />
         <button type="submit">Search</button>
       </form>
 

@@ -5,14 +5,16 @@ import Login from '../pages/Login.jsx';
 import Homepage from '../pages/Homepage.jsx';
 import ApplicationView from '../pages/ApplicationView.jsx';
 import Signup from '../pages/Signup.jsx';
-import Navbar from './Navbar.jsx';
+import Navigation from './Navigation.jsx';
+import bootstrap from 'bootstrap';
 
-import styles from '../styles/styles.css';
+// import 'bootstrap/dist/css/bootstrap.min.css'
+import styles from '../styles/_custom.scss';
 
 const App = (props) => {
 
   return <div>
-    <Navbar />
+    <Navigation />
     <Switch>
       <Route exact path ="/">
         <Login />

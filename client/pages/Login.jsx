@@ -31,7 +31,7 @@ const Login = props => {
       // }
       history.push('/homepage');
     }).catch((err) => {
-      console.log('in error')
+      console.log('in error');
       console.log(err);
     })
 
