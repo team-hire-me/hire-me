@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRouter');
 // const apiRouter = require('./routes/apiRouter');
 
@@ -9,6 +10,9 @@ const PORT = 3000;
 
 // Parse request body onto req.body
 app.use(express.json());
+
+// parses cookies to req.cookies
+app.use(cookieParser());
 
 // Only serve bundle and initial html in when in production
 if (process.env.NODE_ENV === 'production') {
