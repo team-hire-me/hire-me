@@ -1,15 +1,48 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Signup = props => {
+  const history = useHistory();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+
+    fetch('/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+      }),
+    }).then(response => {
+      console.log(response.status);
+      if (response.status === 200) {
+        history.push("/homepage")
+      }
+      else{
+        history.push("/signup")
+      }
+    })
+
+
+  }
+
   return <div>
-    <form id="signup" method="POST">
+    <form id="signup" onSubmit={(e) => handleSubmit(e)}>
     <input id="name" name="name" placeholder="name" type="text"></input>
       <br></br>
-      <input id="username" name="username" placeholder="username" type="text"></input>
+      <input id="email" name="email" placeholder="email" type="text"></input>
       <br></br>
       <input id="pass" name="pass" placeholder="pass" type="text"></input>
       <br></br>
-      <button id="submit" formaction="/auth/signup" type="submit">Sign Up</button>
+      <button id="submit" formAction="/auth/signup" type="submit">Sign Up</button>
     </form>
   </div>
 }

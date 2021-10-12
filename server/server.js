@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 // const apiRouter = require('./routes/apiRouter');
 
 // Create express App
 const app = express();
 const PORT = 3000;
+
+app.options('*',cors());
 
 if (process.env.NODE_ENV === 'production') {
   // Serve webpackfile bundle from dist folder:
