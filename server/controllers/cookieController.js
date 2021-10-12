@@ -57,13 +57,49 @@ cookieController.generateSSID = async (req, res, next) => {
   }
 };
 
-// create cookie for user
+// Adds SSID Cookie to response when user logs in
 cookieController.setCookie = (req, res, next) => {
   if (res.locals.error) {
     return next();
   }
-  res.cookie('cookie', res.locals.ssid);
+  res.cookie('ssid', res.locals.ssid, { httpOnly: true });
   return next();
+};
+
+// Checks if SSID Cookie from request is valid and authorises user
+cookieController.verifySession = async (req, res, next) => {
+  // console.log('TRYING TO VERIFY USER SESSION', req.cookies, req.cookies.ssid);
+
+  // Check cookies exist:
+  if (!req.cookies || !req.cookies.ssid) {
+    res.locals.error = { message: 'No auth cookie on request - redirect to login. ' };
+    return res.status(401).json(res.locals.error);
+  }
+
+  // Check cookie is valid in sessions table:
+  const cookieQ = `
+  SELECT * FROM sessions
+  JOIN users ON sessions.user_id = users._id
+  WHERE sessions.ssid = $1`;
+
+  try {
+    let { rows } = await db.query(cookieQ, [req.cookies.ssid]);
+    // If no result then session is not valid:
+    // console.log('VERIFY SESSION DB RESULT: ', rows);
+    if (!rows.length) {
+      res.locals.error = { message: 'Invalid ssid cookie - redirect to login' };
+      return res.status(401).json(res.locals.error);
+    }
+
+    res.locals.user = { _id: rows[0].user_id, name: rows[0].name, email: rows[0].email };
+    // console.log('Authorised user: ', res.locals.user);
+    return next();
+  } catch (err) {
+    next({
+      log: `Error in sessionController.verifySession when trying find a users session details: ERROR: ${err}`,
+      message: { err: 'Error finding user session from ssid' },
+    });
+  }
 };
 
 module.exports = cookieController;

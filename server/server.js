@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRouter');
-// const apiRouter = require('./routes/apiRouter');
+const apiRouter = require('./routes/apiRouter');
 
 // Create express App and define PORT to listen on
 const app = express();
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Router
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 // Authentication Router for signup/login/logout etc.
 app.use('/auth', authRouter);
