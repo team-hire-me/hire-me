@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRouter');
 const apiRouter = require('./routes/apiRouter');
@@ -8,6 +9,9 @@ const apiRouter = require('./routes/apiRouter');
 const app = express();
 const PORT = 3000;
 
+app.options(cors());
+
+// Parse request body onto req.body
 // Parse request body onto req.body, and urlencoded params into params:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

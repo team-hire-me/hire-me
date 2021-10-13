@@ -376,9 +376,11 @@ appsController.toggleArchive = async (req, res, next) => {
 
 // Scrapes indeed job posting details:
 appsController.scrape = async (req, res, next) => {
+  console.log('TRYING TO SCRAPE FROM URL: ', req.body);
   // Start headless browser:
   let browser, content;
-  const { url } = req.params;
+  const { url } = req.body;
+  console.log('scrape: ', url)
   try {
     console.log("Opening the browser......");
     browser = await puppeteer.launch({
@@ -393,30 +395,33 @@ appsController.scrape = async (req, res, next) => {
 
     // Grab html content:
     await page.waitForSelector('#jobDescriptionText');
-    const content = await page.content();
-    console.log('Page Contente IS: ', content);
+    content = await page.content();
+    // console.log('Page Contente IS: ', content);
     await browser.close();
+    console.log('CLOSED HEADLESS BROWSER')
   } catch (err) {
     next({
       log: `Error in appsController.scrape when adding to scrape webpage: ${err}`,
       message: { err: 'Error when scraping webpage for job details' },
     });
   }
-
   const soup = new JSSoup(content);
-  const title = soup.find('h1', 'jobsearch-JobInfoHeader-title');
-  console.log('Job title: ', title.getText());
-  const company = soup.find('div', 'icl-u-lg-mr--sm');
-  console.log('Company: ', company.getText());
-  const location = soup.find('div', 'jobsearch-InlineCompanyRating');
-  console.log('Location: ', location.nextSibling.getText());
-  let description = soup.find('div', 'jobsearch-jobDescriptionText');
+  let title = await soup.find('h1', 'jobsearch-JobInfoHeader-title');
+  title = title.getText();
+  let company = await soup.find('div', 'icl-u-lg-mr--sm');
+  company = company.getText();
+  // console.log('Company: ', company);
+  let location = await soup.find('div', 'jobsearch-InlineCompanyRating');
+  location = location.nextSibling.getText();
+  // console.log('Location: ', location);
+  let description = await soup.find('div', 'jobsearch-jobDescriptionText');
   description.attrs.id = '';
   description.attrs.class = '';
   description = description.prettify();
-  console.log('Details: ', description);
+  // console.log('Details: ', description);
 
   res.locals.details = { title, company, location, description, link: url };
+  // console.log('SENDING BACK TO BROWSER: ', res.locals.details);
   return next();
 };
 

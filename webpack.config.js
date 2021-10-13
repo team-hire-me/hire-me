@@ -23,13 +23,14 @@ module.exports = {
         ],
       },
       {
-        test: /.(css|scss)$/,
+        test: /\.(css|scss)$/,
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },
   devServer: {
+    hot: true,
     static: {
       directory: path.resolve(__dirname, 'client'),
     },
@@ -41,5 +42,6 @@ module.exports = {
         target: 'http://localhost:3000/',
       },
     },
+    historyApiFallback: true,
   },
 };

@@ -116,12 +116,12 @@ router.patch('/archive/:appID',
   });
 
 // Scrapes indeed link for data
-router.get('/scrape/:url',
+router.post('/scrape',
   cookieController.verifySession,
   appsController.scrape,
   (req, res) => {
     console.log('reached end of web scraping route');
-    return res.status(200).json(res.locals.data);
+    return res.status(200).json(res.locals.details);
   });
 
 module.exports = router;
