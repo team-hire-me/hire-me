@@ -24,7 +24,7 @@ body {
   /* ### NAVBAR ### */
   
   .navbar.navbar-light.bg-light {
-    background-color: dodgerblue !important;
+    background-color: rgb(167, 207, 247) !important;
     margin-bottom: 20px;
   
     .navbar-brand {
@@ -54,24 +54,22 @@ body {
   
   /* ### CARDS ### */
   
-  .event-card.card {
+  .app-card.card {
     padding: 0 0;
-  
+    display: grid;
+    grid-row-gap: 4rem;
+    margin: 2rem;
     .card-body {
       .card-subtitle {
         margin-bottom: 16px;
       }
       .card-text {
         margin-bottom: 20px;
-        font-size: 20px;
+        font-size: 10px;
         span {
           margin-right: 28px;
         }
       }
-      // .prices {
-      //   display: flex;
-      //   justify-content: space-between;
-      // }
       .btn-group {
         margin-top: 28px;
         a {

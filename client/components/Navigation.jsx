@@ -48,10 +48,13 @@ return (
           <li className="nav-item">
             <Link to="/homepage" className="nav-link">Home</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/applicationView/0" className="nav-link">App</Link>
+          </li>
           {authUser
             ? (
               <li className="nav-item">
-                <Link to="/applicationview" className="nav-link"> Applications</Link>
+                <Link to="/applicationView/0" className="nav-link"> Applications</Link>
               </li>
             )
             : null}

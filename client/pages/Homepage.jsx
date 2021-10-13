@@ -2,25 +2,14 @@ import React, { useState, useEffect } from 'react';
 import AppCard from '../components/AppCard.jsx';
 
 const Homepage = (props) => {
-  const [appsList, setAppsList] = useState([]);
-
-  useEffect(() => {
-    fetch('/getUserApplications', {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-
-      }).catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+  
   function handleSubmit(e) {
     e.preventDefault();
   }
 
-  const displayApps = appsList.map((obj) => <AppCard />);
+  const displayApps = props.appsList.map((obj, index) => {
+    return <AppCard key={index} title={obj.title} company_name={obj.company_name} location={obj.location} description={obj.description} link={obj.link} />;
+  });
 
   return (
     <div>

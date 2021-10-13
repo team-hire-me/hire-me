@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import Login from '../pages/Login.jsx';
 import Homepage from '../pages/Homepage.jsx';
@@ -12,7 +13,24 @@ import bootstrap from 'bootstrap';
 import styles from '../styles/_custom.scss';
 
 const App = (props) => {
-  console.log('app');
+  const [appsList, setAppsList] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/applications', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setAppsList(res);
+        // console.log('2',res);
+        // console.log('3',res.body);
+      }).catch((err) => {
+        console.log(err);
+      });
+  }, []);
+ 
+  // console.log(Cookies.get());
   return (
     <div>
       <Navigation />
@@ -24,10 +42,10 @@ const App = (props) => {
           <Signup />
         </Route>
         <Route path="/homepage">
-          <Homepage />
+          <Homepage appsList={appsList} />
         </Route>
-        <Route path="/applicationView">
-          <ApplicationView />
+        <Route path="/applicationView/:id">
+          <ApplicationView appsList={appsList} />
         </Route>
       </Switch>
     </div>
