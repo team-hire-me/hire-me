@@ -26,8 +26,9 @@ router.post('/createApp',
   });
 
 // Gets notes and todos associated with an individual application
-router.get('/applications/:id',
+router.get('/applications/:appID',
   cookieController.verifySession,
+  appsController.appAuth,
   appsController.getNotes,
   appsController.getTodos,
   (req, res) => {
@@ -36,21 +37,52 @@ router.get('/applications/:id',
   });
 
 // Create a new todo on a specific application
-router.post('/applications/:id/todos',
+router.post('/applications/:appID/todos',
   cookieController.verifySession,
+  appsController.appAuth,
   appsController.postTodo,
   (req, res) => {
     console.log('reached end of create todo route');
     return res.status(200).json(res.locals.todo);
   });
 
-// Create a new todo on a specific application
-router.post('/applications/:id/notes',
+// Toggle the checked status of a todo
+router.patch('/applications/:appID/todo/:todoID',
   cookieController.verifySession,
+  appsController.appAuth,
+  appsController.toggleTodo,
+  (req, res) => {
+    console.log('reached end of todo toggle route');
+    return res.status(200).json(res.locals.todo);
+  });
+
+// Create a new note on a specific application
+router.post('/applications/:appID/notes',
+  cookieController.verifySession,
+  appsController.appAuth,
   appsController.postNote,
   (req, res) => {
     console.log('reached end of create notes route');
     return res.status(200).json(res.locals.postNote);
+  });
+
+// Gets archived apps
+router.get('/archive',
+  cookieController.verifySession,
+  appsController.getArchive,
+  (req, res) => {
+    console.log('reached end of get archive route');
+    return res.status(200).json(res.locals.archive);
+  });
+
+// Adds apps to the archive
+router.patch('/archive/:appID',
+  cookieController.verifySession,
+  appsController.appAuth,
+  appsController.toggleArchive,
+  (req, res) => {
+    console.log('reached end of toggle archive route');
+    return res.status(200).json(res.locals.application);
   });
 
 module.exports = router;
