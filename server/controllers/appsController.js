@@ -86,7 +86,6 @@ appsController.postApps = async (req, res, next) => {
   }
 };
 
-
 // Get all notes for a particular application
 appsController.getNotes = async (req, res, next) => {
   console.log('TRYING TO GET NOTES FOR: ', req.params.appID);
@@ -131,6 +130,46 @@ appsController.getTodos = async (req, res, next) => {
   }
 };
 
+appsController.deleteApp = async (req, res, next) => {
+  const { appID } = req.params;
+
+  // Delete all related todos and notes from DB, then delete application
+  // Improve this using delete cascade for notes and todos
+  const deleteNotes = `
+    DELETE FROM notes
+    WHERE user_id = $1
+    AND applications_id = $2
+  `;
+
+  const deleteTodos = `
+    DELETE FROM todos
+    WHERE user_id = $1
+    AND applications_id = $2
+  `;
+
+  const deleteApp = `
+    DELETE FROM applications
+    WHERE user_id = $1
+    AND _id = $2
+    RETURNING *
+  `;
+  try {
+    await db.query(deleteNotes, [res.locals.user._id, appID]);
+    await db.query(deleteTodos, [res.locals.user._id, appID]);
+    const { rows } = await db.query(deleteApp, [res.locals.user._id, appID]);
+    if (!rows.length) {
+      return res.status(404).json({ message: 'Could not find application to delete!' });
+    }
+    res.locals.application = rows[0];
+    return next();
+  } catch (err) {
+    next({
+      log: `Error in appsController.deleteApp when trying to delete applicatio from db: ${err}`,
+      message: { err: 'Error deleting application from DB' },
+    });
+  }
+};
+
 // Create a new note on a specific application
 appsController.postNote = async (req, res, next) => {
   console.log('IN POST NOTE MIDDLEWARE');
@@ -160,6 +199,35 @@ appsController.postNote = async (req, res, next) => {
     next({
       log: `Error in appsController.postNote when trying to get post note to db: ${err}`,
       message: { err: 'Error creating new note in DB' },
+    });
+  }
+};
+
+// Deletes a specified todo on a specific application:
+appsController.deleteNote = async (req, res, next) => {
+  const { appID, noteID } = req.params;
+
+  const deleteNote = `
+    DELETE FROM notes
+    WHERE _id = $1
+    AND user_id = $2
+    AND applications_id = $3
+    RETURNING *
+  `;
+  const params = [noteID, res.locals.user._id, appID];
+
+  try {
+    const { rows } = await db.query(deleteNote, params);
+    // If note not found for deletion return 404:
+    if (!rows.length) {
+      return res.status(404).json({ message: 'Note not found for deletion!' });
+    }
+    res.locals.note = rows[0];
+    return next();
+  } catch (err) {
+    next({
+      log: `Error in appsController.deleteNote when trying to delete a note : ${err}`,
+      message: { err: 'Error deleting note in DB' },
     });
   }
 };
@@ -222,6 +290,35 @@ appsController.toggleTodo = async (req, res, next) => {
     next({
       log: `Error in appsController.toggleTodo when trying to toggle a todo checked status: ${err}`,
       message: { err: 'Error toggling todo checked status in DB' },
+    });
+  }
+};
+
+// Deletes a specified todo on a specific application:
+appsController.deleteTodo = async (req, res, next) => {
+  const { appID, todoID } = req.params;
+
+  const deleteTodo = `
+    DELETE FROM todos
+    WHERE _id = $1
+    AND user_id = $2
+    AND applications_id = $3
+    RETURNING *
+  `;
+  const params = [todoID, res.locals.user._id, appID];
+
+  try {
+    const { rows } = await db.query(deleteTodo, params);
+    // If todo not found for deletion return 404:
+    if (!rows.length) {
+      return res.status(404).json({ message: 'Todo not found for deletion!' });
+    }
+    res.locals.todo = rows[0];
+    return next();
+  } catch (err) {
+    next({
+      log: `Error in appsController.deleteTodo when trying to delete a todo : ${err}`,
+      message: { err: 'Error deleting todo in DB' },
     });
   }
 };
