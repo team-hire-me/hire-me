@@ -11,6 +11,7 @@ const Login = props => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
 
+    let status;
     (email === '' && password === '') ? setError(['Email and Password needed']) : fetch('/auth/login', {
       method: 'POST',
       headers: {
@@ -20,32 +21,41 @@ const Login = props => {
         email,
         password,
       }),
-    }).then(res => {
-      
-      if (res.status === 200) {
-        props.setAuthUser(true);
-        history.push('/homepage');
-      }
-      else if (res.status === 401) {
-        history.push('/signup');
-      }
-      else if (res.status === 400 || res.status === 500) {
-        setError(['Wrong Email or Password'])
-      } 
-      // history.push('/homepage');
-    }).catch((err) => {
-      console.log('in error');
-      console.log(err);
-      setError([err]);
-    });
+    })
+      .then(res => {
+        status = res.status;
+        return res.json();
+        // history.push('/homepage');
+      })
+      .then(res => {
+        if (status === 200) {
+          props.setAuthUser(true);
+          props.setUserName(res.name)
+          history.push('/homepage');
+        }
+        else if (status === 401) {
+          history.push('/signup');
+        }
+        else if (status === 400 || status === 500) {
+          setError(['Wrong Email or Password'])
+        } 
+      })
+      .catch((err) => {
+        console.log('in error');
+        console.log(err);
+        setError([err]);
+      });
   }
 
   const errView = error.map(err => {
-    return <p>{err}</p>
+    return <div class="alert alert-danger" role="alert">
+      {err}
+    </div>
   })
 
   return (
     <div className="login-form">
+      <h1>Hire.me</h1>
       <form id="signin" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-group align-items-center">
           <input id="email" name="email" placeholder="email" type="text"></input>
@@ -55,8 +65,8 @@ const Login = props => {
         <br></br>
         {errView}
         <div className="signin-btnbox">
-          <button id="signup-btn" onClick={() => history.push('/signup')} type="button">Sign Up</button>
-          <button id="login-btn" formAction="/auth/login" type="submit">Login</button>
+          <button id="signup-btn" className="btn btn-dark" onClick={() => history.push('/signup')} type="button">Sign Up</button>
+          <button id="login-btn" className="btn btn-dark" formAction="/auth/login" type="submit">Login</button>
         </div>
       </form>
     </div>

@@ -12,7 +12,7 @@ const Homepage = (props) => {
   });
 
   return (
-    <div>
+    <div id="homepage-container">
       <h1>Current Applications</h1>
       <form id="search" onSubmit={(e) => handleSubmit(e)}>
         <input id="searchstr" name="searchstr" placeholder="application title" type="text" />

@@ -12,11 +12,12 @@ const Navigation = props => {
         'Content-Type': 'application/json',
       },
     }).then(res => {
+        props.setAuthUser(false);
         history.push('/');
     });
   }
   const authUser = props.authUser;
-  const userName = 'test';
+  const userName = props.userName;
 //   return (
 //     <Navbar>
 //       <Container>
@@ -33,7 +34,7 @@ return (
   <nav className="navbar navbar-expand-sm navbar-light bg-light">
     <div className="container-fluid">
       {/* {NAVBAR BRAND} */}
-      <Link to="/homepage">
+      <Link to={authUser ? '/homepage' : '/'}>
         <button type="button" className="navbar-brand">
           Hire.me
         </button>
@@ -44,21 +45,19 @@ return (
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         {/* {NAVBAR LEFT} */}
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to="/homepage" className="nav-link">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/applicationView/0" className="nav-link">App</Link>
-          </li>
-          {authUser
+          
+        {authUser
             ? (
-              <li className="nav-item">
-                <Link to="/applicationView/0" className="nav-link"> Applications</Link>
-              </li>
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <Link to="/homepage" className="nav-link">Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/applicationView/0" className="nav-link"> Applications</Link>
+                </li>
+              </ul>
             )
             : null}
-        </ul>
 
         {/* {NAVBAR RIGHT} */}
 
@@ -66,17 +65,17 @@ return (
           ? (
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <span className="nav-link">Logged in as {userName}</span>
+                <span disabled className="nav-link">Logged in as {userName}</span>
               </li>
               <li className="nav-item">
-                <Link to="/logout" className="nav-link">Logout</Link>
+                <a className="no-hover nav-link" href="#" onClick={(e) => handleLogout(e)}>Logout</a>
               </li>
             </ul>
           )
           : (
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to="/login" className="nav-link">Login</Link>
+                <Link to="/" className="nav-link">Login</Link>
               </li>
               <li className="nav-item">
                 <Link to="/signup" className="nav-link">Signup</Link>

@@ -34,7 +34,7 @@ const Signup = props => {
 
   }
 
-  return <div>
+  return <div className={'login-form'}>
     <form id="signup" onSubmit={(e) => handleSubmit(e)}>
     <input id="name" name="name" placeholder="name" type="text"></input>
       <br></br>
@@ -42,7 +42,7 @@ const Signup = props => {
       <br></br>
       <input id="pass" name="pass" placeholder="pass" type="text"></input>
       <br></br>
-      <button id="submit" formAction="/auth/signup" type="submit">Sign Up</button>
+      <button id="signup-btn" className="btn btn-dark sign-signup-btn" formAction="/auth/signup" type="submit">Sign Up</button>
     </form>
   </div>
 }

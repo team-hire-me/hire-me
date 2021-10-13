@@ -7,6 +7,7 @@ const ProgressTracker = props => {
 
   const [notes, setNotes] = useState([]);
   const [todos, setTodos] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     console.log('props changed');
@@ -28,7 +29,7 @@ const ProgressTracker = props => {
           setTodos(res.todos);
         });
     }
-  }, [props]);
+  }, [props, refresh]);
 
   function handleAddTodo(e) {
     e.preventDefault();
@@ -75,18 +76,61 @@ const ProgressTracker = props => {
     }
   }
 
+  const handleTodoCheck = function(e, id) {
+    // e.preventDefault();
+    console.log(document.getElementById('todoCheck').checked);
+    console.log(e.target.checked);
 
-  let showNotes = notes.map(note => {
+    // if (e.target.checked) {
+      fetch(`/api/applications/${props.appId}/todo/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          checked: e.target.checked
+        })
+      })
+        .then(res => {
+          console.log(res);
+          setRefresh(!refresh);
+          // history.go(0);
+        })
+        .catch(err => {
+          console.log('err: ',err)
+        })
+    // }
+  }
+
+  let showNotes = notes.sort((first, second) => {
+    return first._id > second._id;
+  }).map(note => {
     return <div>{note.content}</div>
   })
   
-  let showTodos = todos.map(todo => {
-    return <div>{todo.content}</div>
+  let showTodos = todos.sort((first, second) => {
+    return first._id > second._id;
+  }).map(todo => {
+    return (
+      <li key={todo._id}>
+        {todo.content}
+        <input 
+          type = "checkbox"
+          id ="todoCheck"
+          className="list-group-item"
+          onChange={(e) => handleTodoCheck(e, todo._id)} checked={todo.checked}>
+        </input>
+      </li>
+    );
   })
 
 
   return <div id="progress-tracker">
-    {showTodos}
+    <div id='todos-view' className="card">
+      <ul className='list-group list-group-flush'>
+        {showTodos}
+      </ul>
+    </div>
     <form onSubmit={(e) => handleAddTodo(e)}>
       <textarea type="text" id="todos-content"></textarea>
       <br />

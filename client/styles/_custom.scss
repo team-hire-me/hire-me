@@ -5,7 +5,7 @@
 @import 'styles';
 
 body {
-    background-color:  lightgray;
+    background-color:  whitesmoke;
   }
   
   li {
@@ -24,9 +24,8 @@ body {
   /* ### NAVBAR ### */
   
   .navbar.navbar-light.bg-light {
-    background-color: rgb(167, 207, 247) !important;
-    margin-bottom: 20px;
-  
+    background-color: rgb(18, 18, 19) !important;
+
     .navbar-brand {
       font-size: 24px;
       font-weight: 600;
@@ -47,6 +46,10 @@ body {
       .nav-link {
         border: none;
         background-color: transparent;
+        color: white;
+      }
+      .nav-link:hover {
+        color:rgba(252, 7, 7, 0.678)
       }
     }
   }

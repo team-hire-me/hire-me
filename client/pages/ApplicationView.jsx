@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import SplitPane from 'react-split-pane';
 
 import ApplicationsTree from '../components/ApplicationsTree.jsx';
 import ApplicationPreview from '../components/ApplicationPreview.jsx';
@@ -35,11 +36,27 @@ const ApplicationView = props => {
     console.log('appId: ',appId)
   }
 
+  const onDragCallback = () => {
+    console.log('dragging');
+  }
+
   console.log('focus: ',applicationfocus);
   return <div id="application-view">
-    <ApplicationsTree apptree={apptree} />
-    <ApplicationPreview  focus={applicationfocus}/>
-    <ProgressTracker userId={userId} appId={appId} />
+    <SplitPane
+      onChange={() => onDragCallback()}
+      onDragStarted={() => onDragCallback()} split="vertical" minSize={50} defaultSize={200}>
+      <div className="pane">
+        <ApplicationsTree apptree={apptree} />
+      </div>
+      <SplitPane split="vertical" defaultSize={300}>
+        <div className="pane">
+          <ApplicationPreview  focus={applicationfocus}/>
+        </div>
+        <div className="pane">
+          <ProgressTracker userId={userId} appId={appId} />
+        </div>
+      </SplitPane>
+    </SplitPane>
   </div>
 }
 
