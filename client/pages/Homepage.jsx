@@ -20,11 +20,6 @@ const Homepage = (props) => {
       <div id="cards-view">
         {displayApps}
       </div>
-      <div className="btn-group">
-        <a className="btn btn-sm btn-primary">Archive App</a>
-        <button type="button" className="btn btn-sm btn-info">
-        </button>
-      </div>
     </div>
   );
 };

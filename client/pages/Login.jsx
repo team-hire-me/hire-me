@@ -61,7 +61,7 @@ const Login = props => {
           <input id="email" name="email" placeholder="email" type="text"></input>
           <br></br>
         </div>
-        <input id="pass" name="pass" placeholder="password" type="text"></input>
+        <input id="pass" name="pass" placeholder="password" type="password"></input>
         <br></br>
         {errView}
         <div className="signin-btnbox">

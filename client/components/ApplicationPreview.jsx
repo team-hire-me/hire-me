@@ -10,11 +10,11 @@ const ApplicationPreview = (props) => {
   console.log(props.focus);
   return (props.focus.length === 0) ? (
     <div>
-      <CreateApplicationForm />
+      <CreateApplicationForm appRefresh={props.appRefresh} setAppRefresh={props.setAppRefresh} />
     </div>
   )
   : (
-    <div><ContentsView app={props.focus[0]} /></div>
+    <div><ContentsView appRefresh={props.appRefresh} setAppRefresh={props.setAppRefresh} app={props.focus[0]} /></div>
   )
 };
 

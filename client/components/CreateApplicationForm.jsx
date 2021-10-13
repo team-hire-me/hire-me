@@ -2,41 +2,38 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 const JSSoup = require('jssoup').default;
 
-
 const CreateApplicationForm = (props) => {
   const history = useHistory();
 
   // Function to autofill form from Indeed link webscrape
   function autoFill(e) {
-    console.log('trying to autofill form!')
+    console.log('trying to autofill form!');
     e.preventDefault();
     const link = document.getElementById('indeed').value;
     if (link) {
-      fetch(link, { headers: {
-        'Access-Control-Allow-Origin': '*',
-      }})
+      fetch(`/api/scrape`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({url: link}),
+      })
         .then((response) => {
-          console.log('RESPONSE STATUS: ', response.status)
+          // console.log('RESPONSE STATUS: ', response.status);
           if (response.status === 200) {
-            return response.text();
+            return response.json();
           }
-          throw new Error('Autofill link non-200 status response.')
-        }).then((html) => {
-          const soup = new JSSoup(data);
-          const title = soup.find('h1', 'jobsearch-JobInfoHeader-title');
-          const company = soup.find('div', 'icl-u-lg-mr--sm');
-          const location = soup.find('div', 'jobsearch-InlineCompanyRating');
-          const description = soup.find('div', 'jobsearch-jobDescriptionText');
-
+          throw new Error('Autofill link non-200 status response.');
+        }).then((data) => {
           // Add contents to create application form:
-          document.getElementById('title').value = title;
-          document.getElementById('company_name').value = company;
-          document.getElementById('location').value = location;
-          document.getElementById('description').value = description;
-          document.getElementById('link').value = link;
+          document.getElementById('title').value = data.title;
+          document.getElementById('company_name').value = data.company;
+          document.getElementById('location').value = data.location;
+          document.getElementById('description').value = data.description;
+          document.getElementById('link').value = data.link;
         }).catch((err) => {
-          console.log('Error when trying to auto-fill app: ', err)
-        })
+          console.log('Error when trying to auto-fill app: ', err);
+        });
     }
   }
 
@@ -61,15 +58,16 @@ const CreateApplicationForm = (props) => {
         link,
       }),
     }).then((response) => {
-      console.log(response);
-      console.log(response.status);
+      // console.log(response);
+      // console.log(response.status);
       if (response.status === 200) {
         return response.json();
       }
       throw new Error('Error when trying to create new Application')
     }).then((data) => {
-      console.log('Application data is: ', data);
-      history.push(`/applicationView/${id}`);
+      // console.log('Application data is: ', data);
+      props.setAppRefresh(!props.appRefresh);
+      // history.push(`/applicationView/0`);
     }).catch((err) => {
       console.log('in error');
       console.log(err);

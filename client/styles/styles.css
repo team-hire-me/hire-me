@@ -8,7 +8,7 @@ body {
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #applications-tree {
@@ -141,8 +141,9 @@ body {
   padding-top: 40px;
 }
 
-.Pane {
-  height: 100%
+.SplitPane {
+  min-height: 100%;
+  overflow: scroll;
 }
 
 .Resizer {

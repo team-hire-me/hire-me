@@ -6,6 +6,7 @@ import Homepage from '../pages/Homepage.jsx';
 import ApplicationView from '../pages/ApplicationView.jsx';
 import Signup from '../pages/Signup.jsx';
 import Navigation from './Navigation.jsx';
+import ApplicationArchive from '../pages/ApplicationArchive.jsx';
 // import bootstrap from 'bootstrap';
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
@@ -15,6 +16,9 @@ const App = (props) => {
   const [appsList, setAppsList] = useState([]);
   const [authUser, setAuthUser] = useState(false);
   const [userName, setUserName] = useState('');
+  const [archiveList, setArchiveList] = useState([]);
+  const [appRefresh, setAppRefresh] = useState(false);
+
 
   useEffect(() => {
     fetch('/api/applications', {
@@ -29,7 +33,20 @@ const App = (props) => {
       }).catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, ["", appRefresh]);
+
+  useEffect(() => {
+    fetch('/api/archive', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // console.log(res);
+        setArchiveList(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+  }, ["", appRefresh]);
  
   // console.log(Cookies.get());
   return (
@@ -46,7 +63,10 @@ const App = (props) => {
           <Homepage appsList={appsList} />
         </Route>
         <Route path="/applicationView/:id">
-          <ApplicationView appsList={appsList} />
+          <ApplicationView appRefresh={appRefresh} setAppRefresh={setAppRefresh} appsList={appsList} />
+        </Route>
+        <Route path="/archive">
+          <ApplicationArchive archiveList={archiveList} />
         </Route>
       </Switch>
     </div>

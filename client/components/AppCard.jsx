@@ -12,8 +12,7 @@ const AppCard = props => {
             <h5 className="card-title">Title: {props.title} </h5>
             <h5 className="card-CompanyName">Company Name: {props.company_name} </h5>
             <h5 className="card-CompanyName">Location: {props.location} </h5>
-            <h5 className="card-CompanyName">Description: {props.description} </h5>
-            <h5 className="card-CompanyName">Link: {props.link}.link({props.link}) </h5>
+            <h5 className="card-CompanyName" style={{ overflow: 'hidden' }}>Link: {props.link}) </h5>
             
           </div>
         </div>

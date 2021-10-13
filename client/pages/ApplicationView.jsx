@@ -20,9 +20,9 @@ const ApplicationView = props => {
   console.log(props.appsList);
   console.log(id);
   let applicationfocus = props.appsList.filter((obj) => {
-    console.log(obj);
-    console.log(obj._id);
-    console.log(id,'----');
+    // console.log(obj);
+    // console.log(obj._id);
+    // console.log(id,'----');
     let decision = obj._id == id;
     console.log(decision);
     return decision;
@@ -43,14 +43,16 @@ const ApplicationView = props => {
   console.log('focus: ',applicationfocus);
   return <div id="application-view">
     <SplitPane
+      className="SplitPane"
+      style={{ overflow: "scroll"}}
       onChange={() => onDragCallback()}
       onDragStarted={() => onDragCallback()} split="vertical" minSize={50} defaultSize={200}>
       <div className="pane">
-        <ApplicationsTree apptree={apptree} />
+        <ApplicationsTree appRefresh={props.appRefresh} setAppRefresh={props.setAppRefresh} apptree={apptree} />
       </div>
-      <SplitPane split="vertical" defaultSize={300}>
+      <SplitPane split="vertical" style={{ overflow: "scroll", height: "auto"}} defaultSize={300}>
         <div className="pane">
-          <ApplicationPreview  focus={applicationfocus}/>
+          <ApplicationPreview  appRefresh={props.appRefresh} setAppRefresh={props.setAppRefresh} focus={applicationfocus}/>
         </div>
         <div className="pane">
           <ProgressTracker userId={userId} appId={appId} />

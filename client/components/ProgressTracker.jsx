@@ -127,7 +127,7 @@ const ProgressTracker = props => {
   //`/api/applications/${appId}/todo/${id}`
   //`/api/applications/${appId}/note/${id}`
   
-  let showNotes = notes.sort((first, second) => {
+  let showNotes = notes?.sort((first, second) => {
     return first._id > second._id;
   }).map(note => {
     return (
@@ -159,7 +159,7 @@ const ProgressTracker = props => {
       })
   }
   
-  let showTodos = todos.sort((first, second) => {
+  let showTodos = todos?.sort((first, second) => {
     return first._id > second._id;
   }).map(todo => {
     return (

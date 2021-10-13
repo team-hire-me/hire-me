@@ -4,6 +4,7 @@ import AppCard from '../components/AppCard.jsx';
 const Archive = (props) => {
 
   const archivedApps = props.archiveList.map((obj, index) => {
+    console.log('archive: ',obj);
     return <AppCard key={index} 
     title={obj.title} 
     company_name={obj.company_name} 
