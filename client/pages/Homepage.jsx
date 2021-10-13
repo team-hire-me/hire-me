@@ -10,7 +10,11 @@ const Homepage = (props) => {
 
   const displayApps = props.appsList.map((obj, index) => {
     console.log(obj);
-    return <Link key={index} to={`/applicationView/${obj._id}`}> <AppCard  title={obj.title} company_name={obj.company_name} location={obj.location} description={obj.description} link={obj.link} hoverable /> </Link>;
+    return (
+    // <Link key={index} to={`/applicationView/${obj._id}`}>
+      <AppCard  _id={obj._id} title={obj.title} company_name={obj.company_name} location={obj.location} description={obj.description} link={obj.link} hoverable />
+    // </Link>\
+    );
   });
 
   return (
@@ -18,7 +22,9 @@ const Homepage = (props) => {
       <h1>Current Applications</h1>
 
       <div id="cards-view">
-        {displayApps}
+        <div className="row">
+          {displayApps}
+        </div>
       </div>
     </div>
   );
