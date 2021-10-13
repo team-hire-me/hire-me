@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 
 
-const Notes = (props) => {
+// const Notes = (props) => {
 
 
 
 
-    let notes = "";
-    return(
+//     let notes = "";
+//     return(
 
-    )
-}
+//     )
+// }

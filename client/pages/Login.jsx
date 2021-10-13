@@ -23,6 +23,7 @@ const Login = props => {
     }).then(res => {
       
       if (res.status === 200) {
+        props.setAuthUser(true);
         history.push('/homepage');
       }
       else if (res.status === 401) {

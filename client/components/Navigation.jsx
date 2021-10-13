@@ -15,7 +15,7 @@ const Navigation = props => {
         history.push('/');
     });
   }
-  const authUser = false;
+  const authUser = props.authUser;
   const userName = 'test';
 //   return (
 //     <Navbar>

@@ -14,6 +14,7 @@ import styles from '../styles/_custom.scss';
 
 const App = (props) => {
   const [appsList, setAppsList] = useState([]);
+  const [authUser, setAuthUser] = useState(false);
 
   useEffect(() => {
     fetch('/api/applications', {
@@ -33,10 +34,10 @@ const App = (props) => {
   // console.log(Cookies.get());
   return (
     <div>
-      <Navigation />
+      <Navigation authUser={authUser} />
       <Switch>
         <Route exact path="/">
-          <Login />
+          <Login authUser={authUser} setAuthUser={setAuthUser} />
         </Route>
         <Route path="/signup">
           <Signup />
