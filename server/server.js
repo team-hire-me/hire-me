@@ -12,7 +12,9 @@ const PORT = 3000;
 app.options('*',cors());
 
 // Parse request body onto req.body
+// Parse request body onto req.body, and urlencoded params into params:
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // parses cookies to req.cookies
 app.use(cookieParser());
