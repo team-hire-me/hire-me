@@ -36,6 +36,16 @@ router.get('/applications/:appID',
     return res.status(200).json(res.locals.details);
   });
 
+// Delete an application, all its associated notes and todos
+router.delete('/applications/:appID',
+  cookieController.verifySession,
+  appsController.appAuth,
+  appsController.deleteApp,
+  (req, res) => {
+    console.log('reached end of delete application route');
+    return res.status(200).json(res.locals.application);
+  });
+
 // Create a new todo on a specific application
 router.post('/applications/:appID/todos',
   cookieController.verifySession,
@@ -56,6 +66,16 @@ router.patch('/applications/:appID/todo/:todoID',
     return res.status(200).json(res.locals.todo);
   });
 
+// Delete a todo on an application
+router.delete('/applications/:appID/todo/:todoID',
+  cookieController.verifySession,
+  appsController.appAuth,
+  appsController.deleteTodo,
+  (req, res) => {
+    console.log('reached end of delete todo route');
+    return res.status(200).json(res.locals.todo);
+  });
+
 // Create a new note on a specific application
 router.post('/applications/:appID/notes',
   cookieController.verifySession,
@@ -64,6 +84,16 @@ router.post('/applications/:appID/notes',
   (req, res) => {
     console.log('reached end of create notes route');
     return res.status(200).json(res.locals.postNote);
+  });
+
+// Delete a todo on an application
+router.delete('/applications/:appID/note/:noteID',
+  cookieController.verifySession,
+  appsController.appAuth,
+  appsController.deleteNote,
+  (req, res) => {
+    console.log('reached end of delete note route');
+    return res.status(200).json(res.locals.note);
   });
 
 // Gets archived apps
