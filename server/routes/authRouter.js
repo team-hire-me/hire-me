@@ -33,4 +33,16 @@ router.post('/login',
     return res.status(200).json(res.locals.user);
   });
 
+// delete cookies via delete method?
+router.get('/logout',
+  cookieController.verifySession,
+  cookieController.generateSSID,
+  (req, res) => {
+    if (res.locals.error) {
+      return res.status(400).json(res.locals.error);
+    }
+    console.log('logged out of session');
+    return res.status(200).send('You have been logged out of hire.me');
+  });
+
 module.exports = router;
