@@ -52,6 +52,26 @@ const ProgressTracker = props => {
         });
     }
   }
+
+  function handleNoteDelete(e, noteId, appId) {
+    e.preventDefault();
+    fetch(`/api/applications/${props.appId}/note/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'applicaiton/json'
+      }
+    })
+      .then(res => {
+        if (res.status === 200) {
+          setRefresh(!refresh);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+
   function handleAddNote(e) {
     e.preventDefault();
     const content = document.getElementById('notes-content').value;
@@ -72,7 +92,10 @@ const ProgressTracker = props => {
             console.log('refresh');
             history.push(`/applicationView/${props.appId}`);
           }
-        });
+        })
+        .catch(err => {
+          console.log(err);
+        })
     }
   }
 
@@ -101,32 +124,71 @@ const ProgressTracker = props => {
         })
     // }
   }
-
+  //`/api/applications/${appId}/todo/${id}`
+  //`/api/applications/${appId}/note/${id}`
+  
   let showNotes = notes.sort((first, second) => {
     return first._id > second._id;
   }).map(note => {
-    return <div>{note.content}</div>
+    return (
+      <li className="notes-list" key={note._id}>
+        {note.content}
+        <button
+          type="button"
+          id="noteDelete"
+          className="list-group-item btn btn-dark"
+          onClick={(e) => handleNoteDelete(e, note._id, note.applications_id)} >
+            X
+        </button>
+      </li>
+    )
   })
+
+  const handleTodoDelete = function(e, todoId, appId) {
+    e.preventDefault();
+    fetch(`/api/applications/${appId}/todo/${todoId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          setRefresh(!refresh);
+        }
+      })
+  }
   
   let showTodos = todos.sort((first, second) => {
     return first._id > second._id;
   }).map(todo => {
     return (
-      <li key={todo._id}>
+      <li className="todos-list" key={todo._id}>
         {todo.content}
-        <input 
-          type = "checkbox"
-          id ="todoCheck"
-          className="list-group-item"
-          onChange={(e) => handleTodoCheck(e, todo._id)} checked={todo.checked}>
-        </input>
+        <div>
+          <input 
+            type = "checkbox"
+            id ="todoCheck"
+            className="list-group-item btn btn-dark"
+            onChange={(e) => handleTodoCheck(e, todo._id)} checked={todo.checked}>
+          </input>
+          <button
+            type="button"
+            id="todoDelete"
+            className="list-group-item btn btn-dark"
+            onClick={(e) => handleTodoDelete(e, todo._id, todo.applications_id)} >
+              X
+          </button>
+        </div>
       </li>
     );
   })
 
 
   return <div id="progress-tracker">
-    <div id='todos-view' className="card">
+
+    <h1 id="todos-header">Todos</h1>
+    <div id='todos-view' className="small-card card">
       <ul className='list-group list-group-flush'>
         {showTodos}
       </ul>
@@ -134,13 +196,19 @@ const ProgressTracker = props => {
     <form onSubmit={(e) => handleAddTodo(e)}>
       <textarea type="text" id="todos-content"></textarea>
       <br />
-      <button type="submit">Add New Todo</button>
+      <button className="btn btn-dark" type="submit">Add New Todo</button>
     </form>
-    {showNotes}
+    <br />
+    <h1 id="notes-header">Notes</h1>
+    <div id='notes-view' className="small-card card">
+      <ul className='list-group list-group-flush'>
+        {showNotes}
+      </ul>
+    </div>
     <form onSubmit={(e) => handleAddNote(e)}>
       <textarea type="text" id="notes-content"></textarea>
       <br />
-      <button type="submit" >Add New Note</button>
+      <button className="btn btn-dark" type="submit" >Add New Note</button>
     </form>
   </div>
 }

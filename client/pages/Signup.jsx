@@ -34,7 +34,7 @@ const Signup = props => {
 
   }
 
-  return <div className={'login-form'}>
+  return <div className='login-form'>
     <form id="signup" onSubmit={(e) => handleSubmit(e)}>
     <input id="name" name="name" placeholder="name" type="text"></input>
       <br></br>

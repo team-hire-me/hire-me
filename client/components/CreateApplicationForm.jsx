@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
+const JSSoup = require('jssoup').default;
+
 
 const CreateApplicationForm = (props) => {
+  const history = useHistory();
+
+  // Function to autofill form from Indeed link webscrape
+  function autoFill(e) {
+    console.log('trying to autofill form!')
+    e.preventDefault();
+    const link = document.getElementById('indeed').value;
+    if (link) {
+      fetch(link, { headers: {
+        'Access-Control-Allow-Origin': '*',
+      }})
+        .then((response) => {
+          console.log('RESPONSE STATUS: ', response.status)
+          if (response.status === 200) {
+            return response.text();
+          }
+          throw new Error('Autofill link non-200 status response.')
+        }).then((html) => {
+          const soup = new JSSoup(data);
+          const title = soup.find('h1', 'jobsearch-JobInfoHeader-title');
+          const company = soup.find('div', 'icl-u-lg-mr--sm');
+          const location = soup.find('div', 'jobsearch-InlineCompanyRating');
+          const description = soup.find('div', 'jobsearch-jobDescriptionText');
+
+          // Add contents to create application form:
+          document.getElementById('title').value = title;
+          document.getElementById('company_name').value = company;
+          document.getElementById('location').value = location;
+          document.getElementById('description').value = description;
+          document.getElementById('link').value = link;
+        }).catch((err) => {
+          console.log('Error when trying to auto-fill app: ', err)
+        })
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -25,34 +63,51 @@ const CreateApplicationForm = (props) => {
     }).then((response) => {
       console.log(response);
       console.log(response.status);
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Error when trying to create new Application')
+    }).then((data) => {
+      console.log('Application data is: ', data);
+      history.push(`/applicationView/${id}`);
     }).catch((err) => {
       console.log('in error');
       console.log(err);
     });
   }
-
+  
   return (
-    <div id="application-preview">
-      <form id="application-form" onSubmit={(e) => handleSubmit(e)}>
-        <label htmlFor="title">Title</label>
-        <input id="title" name="title" placeholder="title" type="text" />
-        <br />
-        <label htmlFor="company_name">Company Name</label>
-        <input id="company_name" name="company_name" placeholder="company_name" type="text" />
-        <br />
-        <label htmlFor="location">Location</label>
-        <input id="location" name="location" placeholder="location" type="text" />
-        <br />
-        <label htmlFor="description">Description</label>
-        <textarea id="description" name="description" placeholder="description" type="text" />
-        <br />
-        <label htmlFor="link">Job Posting Url Link</label>
-        <input id="link" name="link" placeholder="link" type="text" />
-        <br />
-        <button id="submit" formAction="/auth/signup" type="submit">Create Application</button>
-      </form>
-    </div>
+    <section>
+      <div>
+        <form id="auto-fill" onSubmit={(e) => autoFill(e)}>
+          <label htmlFor="indeed">Indeed Job Post Link:</label>
+          <input id="indeed" name="indeed" placeholder="Indeed Link" type="text" />
+          <button id="scrape" type="submit">Auto-fill</button>
+        </form>
+      </div>
+
+      <div id="application-preview">
+        <form id="application-form" onSubmit={(e) => handleSubmit(e)}>
+          <label htmlFor="title">Title</label>
+          <input id="title" name="title" placeholder="title" type="text" />
+          <br />
+          <label htmlFor="company_name">Company Name</label>
+          <input id="company_name" name="company_name" placeholder="company_name" type="text" />
+          <br />
+          <label htmlFor="location">Location</label>
+          <input id="location" name="location" placeholder="location" type="text" />
+          <br />
+          <label htmlFor="description">Description</label>
+          <textarea id="description" name="description" placeholder="description" type="text" />
+          <br />
+          <label htmlFor="link">Job Posting Url Link</label>
+          <input id="link" name="link" placeholder="link" type="text" />
+          <br />
+          <button className="btn btn-dark" id="submit" formAction="/auth/signup" type="submit">Create Application</button>
+        </form>
+      </div>
+    </section>
   );
-}
+};
 
 export default CreateApplicationForm;

@@ -22,7 +22,7 @@ const ApplicationsTree = props => {
 
   return <div id="applications-tree">
     {tree}
-    <button type="button" onClick={(e) => handleOnClick(e)}>create new application</button>
+    <button className="btn btn-dark" type="button" onClick={(e) => handleOnClick(e)}>create new application</button>
   </div>
 }
 

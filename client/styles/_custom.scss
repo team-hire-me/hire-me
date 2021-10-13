@@ -54,6 +54,18 @@ body {
     }
   }
   
+  .small-card {
+    border: 0;
+  }
+
+  #todoDelete, #noteDelete {
+    padding: 0;
+  }
+
+  #todos-header, #notes-header {
+    font-size: 18px;
+    font-weight: bold;
+  }
   
   /* ### CARDS ### */
   

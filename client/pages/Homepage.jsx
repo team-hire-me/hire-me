@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AppCard from '../components/AppCard.jsx';
+import { Link } from 'react-router-dom';
 
 const Homepage = (props) => {
   
@@ -8,19 +9,21 @@ const Homepage = (props) => {
   }
 
   const displayApps = props.appsList.map((obj, index) => {
-    return <AppCard key={index} title={obj.title} company_name={obj.company_name} location={obj.location} description={obj.description} link={obj.link} />;
+    console.log(obj);
+    return <Link key={index} to={`/applicationView/${obj._id}`}> <AppCard  title={obj.title} company_name={obj.company_name} location={obj.location} description={obj.description} link={obj.link} hoverable /> </Link>;
   });
 
   return (
     <div id="homepage-container">
       <h1>Current Applications</h1>
-      <form id="search" onSubmit={(e) => handleSubmit(e)}>
-        <input id="searchstr" name="searchstr" placeholder="application title" type="text" />
-        <button type="submit">Search</button>
-      </form>
 
       <div id="cards-view">
         {displayApps}
+      </div>
+      <div className="btn-group">
+        <a className="btn btn-sm btn-primary">Archive App</a>
+        <button type="button" className="btn btn-sm btn-info">
+        </button>
       </div>
     </div>
   );

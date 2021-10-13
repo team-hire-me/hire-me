@@ -55,6 +55,9 @@ return (
                 <li className="nav-item">
                   <Link to="/applicationView/0" className="nav-link"> Applications</Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/archive" className="nav-link"> Archive</Link>
+                </li>
               </ul>
             )
             : null}

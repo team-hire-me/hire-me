@@ -1,19 +1,9 @@
 import React from 'react';
 
 const AppCard = props => {
+
+
     return( 
-//     <div>
-//   Title: {props.title}
-//   <br />
-//   Company Name: {props.company_name}
-//   <br />
-//   Loaction: {props.location}
-//   <br />
-//   Description: {props.description}
-//   <br />
-//   Link: {props.link}
-// </div>;
-// </div> 
 
     < div id="app-card" className ="app-card card mb-3"> 
       <div className="row g-0">
@@ -24,11 +14,7 @@ const AppCard = props => {
             <h5 className="card-CompanyName">Location: {props.location} </h5>
             <h5 className="card-CompanyName">Description: {props.description} </h5>
             <h5 className="card-CompanyName">Link: {props.link}.link({props.link}) </h5>
-            <div className="btn-group">
-              <a className="btn btn-sm btn-primary">Edit App</a>
-                <button type="button" className="btn btn-sm btn-info"> 
-                </button>
-            </div>
+            
           </div>
         </div>
 

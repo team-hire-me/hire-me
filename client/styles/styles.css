@@ -30,6 +30,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .login-form h1 {
@@ -82,6 +83,10 @@ body {
   margin-top: 10px;
 }
 
+.small-cards {
+  border: 0;
+}
+
 #homepage-container {
   width: 100vw;
   margin: 0;
@@ -91,8 +96,41 @@ body {
   align-items: center;
 }
 
-#todos-view {
+#archive-container {
+  width: 100vw;
+  margin: 0;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#todos-view, #notes-view {
   max-width: 18rem;
+  background-color: transparent;
+}
+
+
+
+.todos-list, .notes-list{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.todos-list div, .notes-list div {
+  justify-content: center;
+  display: flex;
+}
+
+.todos-list button, .notes-list button {
+  border: 0;
+  margin: 5px;
 }
 
 .pane {
