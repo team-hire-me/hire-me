@@ -1,4 +1,6 @@
 const db = require('../postgresPool');
+const puppeteer = require('puppeteer');
+const JSSoup = require('jssoup').default;
 
 const appsController = {};
 
@@ -344,7 +346,7 @@ appsController.getArchive = async (req, res, next) => {
   }
 };
 
-//
+// Toggles whether an application is Archived or not
 appsController.toggleArchive = async (req, res, next) => {
   const { appID } = req.params;
   const { archived } = req.body;
@@ -372,8 +374,50 @@ appsController.toggleArchive = async (req, res, next) => {
   }
 };
 
-module.exports = appsController;
+// Scrapes indeed job posting details:
+appsController.scrape = async (req, res, next) => {
+  // Start headless browser:
+  let browser, content;
+  const { url } = req.params;
+  try {
+    console.log("Opening the browser......");
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--disable-setuid-sandbox"],
+      'ignoreHTTPSErrors': true
+    });
+    // Send browser to URL
+    const page = await browser.newPage();
+    console.log(`Navigating to ${url}...`);
+    await page.goto(url);
 
-// 'UPDATE applications
-// SET archived = 1
-// WHERE archived = 0'
+    // Grab html content:
+    await page.waitForSelector('#jobDescriptionText');
+    const content = await page.content();
+    console.log('Page Contente IS: ', content);
+    await browser.close();
+  } catch (err) {
+    next({
+      log: `Error in appsController.scrape when adding to scrape webpage: ${err}`,
+      message: { err: 'Error when scraping webpage for job details' },
+    });
+  }
+
+  const soup = new JSSoup(content);
+  const title = soup.find('h1', 'jobsearch-JobInfoHeader-title');
+  console.log('Job title: ', title.getText());
+  const company = soup.find('div', 'icl-u-lg-mr--sm');
+  console.log('Company: ', company.getText());
+  const location = soup.find('div', 'jobsearch-InlineCompanyRating');
+  console.log('Location: ', location.nextSibling.getText());
+  let description = soup.find('div', 'jobsearch-jobDescriptionText');
+  description.attrs.id = '';
+  description.attrs.class = '';
+  description = description.prettify();
+  console.log('Details: ', description);
+
+  res.locals.details = { title, company, location, description, link: url };
+  return next();
+};
+
+module.exports = appsController;
